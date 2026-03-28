@@ -1,0 +1,46 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mood-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mood_city
+      MYSQL_USER: mood_user
+      MYSQL_PASSWORD: mood_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./calculate_mood_scores.sql:/docker-entrypoint-initdb.d/02-calculate_mood_scores.sql
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mood-network
+
+  python:
+    build: .
+    container_name: mood-python
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_USER: mood_user
+      DB_PASSWORD: mood_password
+      DB_NAME: mood_city
+      DB_PORT: 3306
+      TOMTOM_API_KEY: DrcD6yGnXculh2SBJtSCIXHBUKr13wE0
+    networks:
+      - mood-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  mood-network:
+    driver: bridge
