@@ -17,17 +17,7 @@ mood_score = 0.4*weather + 0.3*sbb + 0.3*traffic  # Weighted average
 ```
 
 ## 🚀 Quick Start
-
-### Option 1: Local Test (keine Docker eingerichtet nötig)
-
-```bash
-# Nur API-Daten testen + Scoring validieren
-python test_standalone.py
-```
-
-Output: JSON mit allen Wert und Scores pro Stadt
-
-### Option 2: Full Docker Setup
+Full Docker Setup
 
 **Voraussetzungen:**
 - Docker Desktop muss laufen (Start auf macOS/Windows)
@@ -70,11 +60,6 @@ City_Mood/
 ├── Dockerfile             # Python Container Image
 ├── docker-compose.yml     # 2 Services: MySQL + Python
 ├── init.sql               # DB-Schema + Init Skript
-├── test_standalone.py     # Local Testing ohne Docker/MySQL
-├── test_local.py          # (Legacy)
-├── getWeather.py          # (Original Wetter-API Script)
-├── getDelaySBB.py         # (Original SBB-API Script)
-└── getTraffic.py          # (Original Traffic-API Script)
 ```
 
 ## 🗄️ Datenbank-Schema
@@ -221,16 +206,6 @@ mysql> SELECT timestamp, mood_score FROM MOOD_SCORE
 
 ## 📝 Entwicklung & Testing
 
-### Nur APIs testen (schnell):
-```bash
-python test_standalone.py
-```
-
-### Nur Scoring testen:
-```python
-from aggregator import calculate_mood_score, calculate_weather_score, etc.
-# ... test functions
-```
 
 ### Vollständiger Cycle mit docker-compose:
 ```bash
