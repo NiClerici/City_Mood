@@ -261,5 +261,5 @@ Für Production:
 
 ---
 
-**Last Updated:** March 23, 2026
+**Last Updated:** March 28, 2026
 **Version:** 2.0 (Docker + MySQL + APScheduler)

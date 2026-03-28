@@ -94,7 +94,7 @@ def fetch_weather(lat: float, lon: float, city: str) -> Optional[dict]:
         current = r.json().get("current_weather", {})
         
         weather_code = current.get("weathercode")
-        time_str = data.get("time", "")
+        time_str = current.get("time", "")
         
         if weather_code is None:
             return None
