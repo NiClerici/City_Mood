@@ -8,6 +8,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application
 COPY aggregator.py .
+COPY config.py .
+COPY calculate_mood_scores.sql .
 
 # Set environment
 ENV PYTHONUNBUFFERED=1
