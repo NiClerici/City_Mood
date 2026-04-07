@@ -7,9 +7,11 @@ services:
       MYSQL_DATABASE: mood_city
       MYSQL_USER: mood_user
       MYSQL_PASSWORD: mood_password
+    command: --default-storage-engine=InnoDB --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=0
     ports:
       - "3306:3306"
     volumes:
+      - ./init-metabase.sql:/docker-entrypoint-initdb.d/00-init-metabase.sql
       - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
       - ./calculate_mood_scores.sql:/docker-entrypoint-initdb.d/02-calculate_mood_scores.sql
       - mysql_data:/var/lib/mysql
@@ -37,6 +39,45 @@ services:
     networks:
       - mood-network
     restart: unless-stopped
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      MB_DB_TYPE: mysql
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 3306
+      MB_DB_USER: mood_user
+      MB_DB_PASS: mood_password
+      MB_DB_HOST: mysql
+    volumes:
+      - ./setup-metabase.sh:/setup-metabase.sh:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - mood-network
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  metabase-init:
+    image: curlimages/curl:latest
+    container_name: metabase-init
+    depends_on:
+      metabase:
+        condition: service_healthy
+    networks:
+      - mood-network
+    volumes:
+      - ./setup-metabase.sh:/setup-metabase.sh:ro
+    entrypoint: sh /setup-metabase.sh
+    restart: "no"
 
 volumes:
   mysql_data:
