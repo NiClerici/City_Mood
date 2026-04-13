@@ -7,7 +7,7 @@ services:
       MYSQL_DATABASE: mood_city
       MYSQL_USER: mood_user
       MYSQL_PASSWORD: mood_password
-    command: --default-storage-engine=InnoDB --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=0
+    command: --default-storage-engine=InnoDB --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=0 --log-bin=off
     ports:
       - "3306:3306"
     volumes:
