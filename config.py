@@ -30,7 +30,7 @@ WEATHER_URL = "https://api.open-meteo.com/v1/forecast"
 SBB_URL = "https://transport.opendata.ch/v1/stationboard"
 TRAFFIC_URL = "https://api.tomtom.com/traffic/services/4/flowSegmentData/relative/12/json"
 
-TOMTOM_API_KEY = os.getenv("TOMTOM_API_KEY", "DrcD6yGnXculh2SBJtSCIXHBUKr13wE0")
+TOMTOM_API_KEY = os.getenv("TOMTOM_API_KEY", "")
 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "localhost"),

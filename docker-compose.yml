@@ -1,12 +1,11 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: mood-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: mood_city
-      MYSQL_USER: mood_user
-      MYSQL_PASSWORD: mood_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mood_city}
+      MYSQL_USER: ${MYSQL_USER:-mood_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-mood_password}
     command: --default-storage-engine=InnoDB --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=0 --log-bin=off
     volumes:
       - ./init-metabase.sql:/docker-entrypoint-initdb.d/00-init-metabase.sql
@@ -23,34 +22,32 @@ services:
 
   python:
     build: .
-    container_name: mood-python
     depends_on:
       mysql:
         condition: service_healthy
     environment:
-      DB_HOST: mysql
-      DB_USER: mood_user
-      DB_PASSWORD: mood_password
-      DB_NAME: mood_city
-      DB_PORT: 3306
-      TOMTOM_API_KEY: DrcD6yGnXculh2SBJtSCIXHBUKr13wE0
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_USER: ${DB_USER:-mood_user}
+      DB_PASSWORD: ${DB_PASSWORD:-mood_password}
+      DB_NAME: ${DB_NAME:-mood_city}
+      DB_PORT: ${DB_PORT:-3306}
+      TOMTOM_API_KEY: ${TOMTOM_API_KEY}
     networks:
       - mood-network
     restart: unless-stopped
 
   metabase:
     image: metabase/metabase:latest
-    container_name: metabase
     depends_on:
       mysql:
         condition: service_healthy
     environment:
       MB_DB_TYPE: mysql
-      MB_DB_DBNAME: metabase
-      MB_DB_PORT: 3306
-      MB_DB_USER: mood_user
-      MB_DB_PASS: mood_password
-      MB_DB_HOST: mysql
+      MB_DB_DBNAME: ${MB_DB_DBNAME:-metabase}
+      MB_DB_PORT: ${MB_DB_PORT:-3306}
+      MB_DB_USER: ${MB_DB_USER:-mood_user}
+      MB_DB_PASS: ${MB_DB_PASS:-mood_password}
+      MB_DB_HOST: ${MB_DB_HOST:-mysql}
     volumes:
       - ./setup-metabase.sh:/setup-metabase.sh:ro
     ports:
@@ -66,7 +63,6 @@ services:
 
   metabase-init:
     image: curlimages/curl:latest
-    container_name: metabase-init
     depends_on:
       metabase:
         condition: service_healthy

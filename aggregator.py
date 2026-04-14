@@ -151,6 +151,10 @@ def fetch_sbb_delay(city: str) -> Optional[dict]:
 def fetch_traffic(lat: float, lon: float, city: str) -> Optional[dict]:
     """Fetch traffic data from TomTom Flow Segment API."""
     try:
+        if not TOMTOM_API_KEY:
+            print("⚠️ TOMTOM_API_KEY is not set; skipping traffic data.", file=sys.stderr)
+            return None
+
         params = {
             "key": TOMTOM_API_KEY,
             "point": f"{lat},{lon}",

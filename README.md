@@ -27,6 +27,10 @@ Full Docker Setup
 ```bash
 # Terminal öffnen
 
+# .env anlegen und API-Key setzen
+cp .env.example .env
+# Danach TOMTOM_API_KEY in .env eintragen
+
 # Docker Compose starten (baut Images, startet MySQL + Python)
 docker compose up --build
 
@@ -149,14 +153,14 @@ mood_score (FLOAT)    # Final score [0-1]
 
 ## ⚙️ Konfiguration
 
-**Environment Variablen** (in docker-compose.yml):
+**Environment Variablen** (in `.env`):
 ```
-DB_HOST=mysql
-DB_USER=mood_user
-DB_PASSWORD=mood_password
-DB_NAME=mood_city
-DB_PORT=3306
-TOMTOM_API_KEY=<dein-api-key>
+TOMTOM_API_KEY=<dein-api-key>   # Pflicht
+DB_HOST=mysql                   # optional (default)
+DB_USER=mood_user               # optional (default)
+DB_PASSWORD=mood_password       # optional (default)
+DB_NAME=mood_city               # optional (default)
+DB_PORT=3306                    # optional (default)
 ```
 
 **Schedule:**
