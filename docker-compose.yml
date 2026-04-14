@@ -17,6 +17,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 25s
     networks:
       - mood-network
 
@@ -45,8 +46,8 @@ services:
       MB_DB_TYPE: mysql
       MB_DB_DBNAME: ${MB_DB_DBNAME:-metabase}
       MB_DB_PORT: ${MB_DB_PORT:-3306}
-      MB_DB_USER: ${MB_DB_USER:-mood_user}
-      MB_DB_PASS: ${MB_DB_PASS:-mood_password}
+      MB_DB_USER: ${MB_DB_USER:-metabase_user}
+      MB_DB_PASS: ${MB_DB_PASS:-metabase_password}
       MB_DB_HOST: ${MB_DB_HOST:-mysql}
     volumes:
       - ./setup-metabase.sh:/setup-metabase.sh:ro
@@ -56,10 +57,11 @@ services:
       - mood-network
     restart: unless-stopped
     healthcheck:
-      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      test: ["CMD-SHELL", "curl --fail --silent http://localhost:3000/api/health > /dev/null || exit 1"]
       interval: 15s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 120s
 
   metabase-init:
     image: curlimages/curl:latest

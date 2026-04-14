@@ -176,6 +176,11 @@ DB_PORT=3306                    # optional (default)
 → Erste Start kann 30-60 Sekunden dauern, MySQL-Health-Check wartet
 → Logs mit `docker compose logs -f mysql` ansehen
 
+### "Metabase unhealthy" / "dependency failed to start"
+→ Metabase benötigt beim ersten Start oft 1-3 Minuten für Migrationen.
+→ Die Compose-Healthchecks sind bereits mit `start_period` angepasst.
+→ Falls nötig: `docker compose down -v` und danach `docker compose up --build` neu starten.
+
 ### "Connection refused: localhost:3306"
 → MySQL Container ist nicht hochgefahren
 → `docker compose logs mysql` ansehen
@@ -240,5 +245,5 @@ Für Production:
 
 ---
 
-**Last Updated:** March 28, 2026
+**Last Updated:** April 14, 2026
 **Version:** 2.0 (Docker + MySQL + APScheduler)
