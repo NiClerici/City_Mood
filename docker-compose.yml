@@ -8,8 +8,6 @@ services:
       MYSQL_USER: mood_user
       MYSQL_PASSWORD: mood_password
     command: --default-storage-engine=InnoDB --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower_case_table_names=0 --log-bin=off
-    ports:
-      - "3306:3306"
     volumes:
       - ./init-metabase.sql:/docker-entrypoint-initdb.d/00-init-metabase.sql
       - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
@@ -56,7 +54,7 @@ services:
     volumes:
       - ./setup-metabase.sh:/setup-metabase.sh:ro
     ports:
-      - "3000:3000"
+      - "${METABASE_PORT:-3000}:3000"
     networks:
       - mood-network
     restart: unless-stopped
