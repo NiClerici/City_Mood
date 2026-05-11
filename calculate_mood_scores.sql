@@ -1,5 +1,6 @@
 -- Stored Procedure: Calculates mood scores from raw data
 
+USE mood_city;
 DELIMITER //
 
 CREATE PROCEDURE IF NOT EXISTS calculate_mood_scores(
@@ -23,6 +24,6 @@ BEGIN
     JOIN TRAFFIC t USING (city_id, timestamp)
     WHERE w.city_id = p_city_id AND w.timestamp = p_timestamp
     LIMIT 1;
-END //
+END//
 
 DELIMITER ;

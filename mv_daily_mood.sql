@@ -3,6 +3,8 @@
 -- Purpose: Performance optimization (Kriterium 5) – avoids full aggregation over MOOD_SCORE
 --          on every Metabase dashboard load.
 
+USE mood_city;
+
 -- ============================================================================
 -- 1. PRE-COMPUTED TABLE (Materialized View)
 -- ============================================================================
@@ -26,7 +28,6 @@ CREATE TABLE IF NOT EXISTS mv_daily_mood (
 -- ============================================================================
 
 DROP PROCEDURE IF EXISTS refresh_mv_daily_mood;
-
 DELIMITER //
 
 CREATE PROCEDURE refresh_mv_daily_mood()
@@ -43,7 +44,7 @@ BEGIN
     FROM MOOD_SCORE
     WHERE mood_score IS NOT NULL
     GROUP BY city_id, DATE(timestamp);
-END //
+END//
 
 DELIMITER ;
 

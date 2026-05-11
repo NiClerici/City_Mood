@@ -1,6 +1,7 @@
 -- Mood City Database Schema
 -- Initialize database with all tables and city data
 
+CREATE DATABASE IF NOT EXISTS mood_city CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE mood_city;
 
 -- ============================================================================

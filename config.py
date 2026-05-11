@@ -1,4 +1,8 @@
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 CITIES = {
     "Zürich": (47.3769, 8.5417),
