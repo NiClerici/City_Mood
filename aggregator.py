@@ -21,7 +21,9 @@ from config import *
 
 def get_db_connection():
     """Get MySQL connection."""
-    return mysql.connector.connect(**DB_CONFIG)
+    config = DB_CONFIG.copy()
+    config['use_pure'] = True  # Use pure Python for compatibility
+    return mysql.connector.connect(**config)
 
 def get_city_id(conn, city_name: str) -> Optional[int]:
     """Get city_id from CITY table."""

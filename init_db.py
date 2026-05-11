@@ -110,7 +110,9 @@ def main():
     try:
         # Connect to MySQL (without database, to create it)
         print("📡 Connecting to MySQL...")
-        connection = mysql.connector.connect(**DB_CONFIG)
+        config = DB_CONFIG.copy()
+        config['use_pure'] = True  # Use pure Python for compatibility
+        connection = mysql.connector.connect(**config)
         print("✅ Connected!\n")
         
         # Execute each SQL file
